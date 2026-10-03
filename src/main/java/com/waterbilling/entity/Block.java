@@ -1,27 +1,18 @@
 package com.waterbilling.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
 import java.util.List;
-
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
 @Table(name = "blocks")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter 
+@Setter 
+@NoArgsConstructor 
+@AllArgsConstructor 
+@Builder
+@ToString(exclude = "units")
 public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +23,7 @@ public class Block {
 
     private Integer totalUnits;
 
+    @JsonIgnore  // <--- ADD THIS ANNOTATION TO PREVENT SERIALIZATION ERROR
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Unit> units;
 }
